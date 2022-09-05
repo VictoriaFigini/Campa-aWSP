@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=0">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+        <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic&display=swap" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">     
+        <link rel="icon" href="img/icono-wsp.png">
+    </head>
+  
+  
+  <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loadMe">Nombra esta foto</button> -->
+          <div class="modal fade" tabindex="-1" role="dialog" id="loadMe">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="loader" aling="center"></div>
+                <h2 class="modal-title">Procesando...</h4>
+              </div>
+            </div>
+          </div>
+
+<title>CampañaWSP</title>
+
+<body id="main">
+    <header id="encabezado">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm">
+                    <h2> Armá tu campaña de </h2>
+                    <h3> WhatsApp </h3>
+                </div>
+            </div>
+        </div>
+    </header>
+
+<section>
+        <div class="container-fluid" id="campain-css">
+            <div class="row ">
+                <div class="col-xs-12 .col-sm-6 col-md-6 col-lg-6" id="campain-col">
+                    <h2> Subí tu lista de cuentas </h2>
+                    <form enctype="multipart/form-data" action="upload.php" method="POST">
+                        <label><textarea name="numbers" id="numbers-cuentas" cols="1" rows="5" placeholder="Por ejemplo:
+1234
+1111
+2222"></textarea></label></br>
+                        <label><input type="hidden" name="MAX_FILE_SIZE" value="512000" /></label><br>
+                        <label><input type="file" accept=".csv" name="csv" value="tmp_name" /></label><br>
+                        <label><input type="submit" value="Enviar cuentas" id="submit" style="display: none;"></label><br>
+                        <label><input type="button" value="Enviar cuentas" id="hidden-button"></label><br>
+                        <label><a href="archivos/plantilla.csv" id="descarga" >Descargar plantilla</a></label><br>
+                    </form>
+                </div>
+                <div class="col-xs-12 .col-sm-6 col-md-6 col-lg-6" id="campain-col">
+                    <h2> Subí tus teléfonos chequeados </h2><br>
+                    <form enctype="multipart/form-data" id="formuploadajax" method="POST">
+                        <label><input type="checkbox" id="cbox1" name="tipo" value="validos"><a> Téfonos válidos</a></input></label><br>
+                        <label><input type="checkbox" id="cbox2" name="tipo" value="invalidos"><a> Teléfonos Inválidos</a></label><br>
+                        <label><input type="hidden" name="MAX_FILE_SIZE" value="512000"></label><br>
+                        <label><input type="file" accept=".csv" name="csv" value="tmp_name"></input></label><br>
+                        <label><input type="submit" name="final" id="final"  value="Enviar Archivo" ></label><br>
+                    </form>
+                    <div id="respuesta"></div>
+                </div>
+            </div>
+        </div>
+</section>
+<section>
+    <footer id="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="text-center p-3">
+                    <div id="logog5">
+                        <a href="https://gesinco.com.ar/" class="logo-gesinco" ><img src="img/gesinco-logo-blanco.png" width="80" hight="80" alt loading="lazy"></a>
+                    </div>
+                    <div class="empresa" id="empresa">
+                        <a href="https://gesinco.com.ar/" class="empresa" >Gestión Integral de Cobranzas SA</a><a> ©2022 - Victoria Figini</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+</body>
+
+<script type="text/javascript" src="js.js"></script>
+<script>
+
+
+$(function(){
+    $("#formuploadajax").on("submit", function(e){
+        $('#loadMe').modal('show');
+        e.preventDefault();
+        var f = $(this);
+        var formData = new FormData(document.getElementById("formuploadajax"));
+        formData.append("dato", "valor");
+        //formData.append(f.attr("name"), $(this)[0].files[0]);
+        $.ajax({
+            url: "uploadcheck.php",
+            type: "post",
+            dataType: "html",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false
+        }).done(function(res){
+                $("#respuesta").html("Cantidad de teléfonos subidos: " + res);
+                hide_loading();
+                if (document.body.contains("#nro_session")){
+                    recargar();
+                }
+                // $('#loadMe').modal('hide');
+            });
+            
+    });
+    
+});
+
+$(function(){
+    $("#hidden-button").on("click", function(e){
+        $('#submit').click();
+        e.preventDefault();
+        $('#loadMe').modal({
+            backdrop: "static", //remove ability to close modal with click
+            keyboard: false, //remove option to close with keyboard
+            show: true //Display loader!
+          });
+
+    })
+})
+
+</script>
+
+
+</html>
