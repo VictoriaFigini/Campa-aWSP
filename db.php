@@ -1,9 +1,9 @@
 <?php
 class Base{
-	const BD_SERVER = "SGIFR";
-	const DB_NAME = "FR_Rosario";
-	const DB_USERNAME = "excel";
-	const DB_PASSWORD = "excelgesinco";
+	const BD_SERVER = "";
+	const DB_NAME = "";
+	const DB_USERNAME = "";
+	const DB_PASSWORD = "";
 	const DB_CHARACTERS = "UTF-8";
 
 	private $conexion;
@@ -19,7 +19,7 @@ class Base{
 	}
 
 	public function abrir_conexion(){
-		$conectionString = array("Database"=>"FR_Rosario", "UID"=>"excel", "PWD"=>"excelgesinco", 'CharacterSet' =>"UTF-8");
+		$conectionString = array("Database"=>"", "UID"=>"", "PWD"=>"", 'CharacterSet' =>"UTF-8");
 		$this->conexion = sqlsrv_connect("SGIFR", $conectionString);
 		if (!$this->conexion) {
 			die(print_r(sqlsrv_errors())); //.sqlsrv_errors()
